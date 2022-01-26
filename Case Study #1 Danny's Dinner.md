@@ -5,6 +5,24 @@
 -- 1. What is the total amount each customer spent at the restaurant?
 <br>
 
+---
+
+**Query #1**
+
+    SELECT * 
+    FROM dannys_diner.menu
+    LIMIT 5;
+
+| product_id | product_name | price |
+| ---------- | ------------ | ----- |
+| 1          | sushi        | 10    |
+| 2          | curry        | 15    |
+| 3          | ramen        | 12    |
+
+---
+
+[View on DB Fiddle](https://www.db-fiddle.com/f/2rM8RAnq7h5LLDTzZiRWcd/138)
+
 -- 2. How many days has each customer visited the restaurant?
 <br>
 -- 3. What was the first item from the menu purchased by each customer?
