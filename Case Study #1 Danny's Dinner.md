@@ -33,10 +33,32 @@ JOIN both ```menu``` and ```sales``` tables using ```product_id```
 ---
 
 
+### -- 2. How many days has each customer visited the restaurant?
+<br>
+
+````sql
+    SELECT customer_id, COUNT(DISTINCT (order_date)) AS Visit_Count
+    FROM dannys_diner.sales
+        
+    GROUP BY customer_id
+    ORDER BY customer_id;
+````
+DISTINCT and COUNT to find out the ```Visit_Count``` for each customer 
+<br>
+
+| customer_id | visit_count |
+| ----------- | ----------- |
+| A           | 4           |
+| B           | 6           |
+| C           | 2           |
+
+
 [View on DB Fiddle](https://www.db-fiddle.com/f/2rM8RAnq7h5LLDTzZiRWcd/138)
 
--- 2. How many days has each customer visited the restaurant?
-<br>
+---
+
+
+
 -- 3. What was the first item from the menu purchased by each customer?
 <br>
 
