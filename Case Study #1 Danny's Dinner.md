@@ -2,26 +2,35 @@
    Case Study Questions
    --------------------*/
 
--- 1. What is the total amount each customer spent at the restaurant?
+### --1. What is the total amount each customer spent at the restaurant?
 <br>
 
----
+````sql
 
-**Query #1**
+    SELECT s.customer_id, SUM(m.product_id) AS Total_Spent
+    
+    FROM dannys_diner.sales AS s
+    JOIN dannys_diner.menu AS m
+    	ON s.product_id = m.product_id 
+        
+    GROUP BY customer_id;
+````
+SUM the ```product_id``` to get the total spent
+<br>
+GROUP BY ```customer_id``` to find out how much each customer is spending
+<br>
+JOIN both ```menu``` and ```sales``` tables using ```product_id``` 
 
-    SELECT * 
-    FROM dannys_diner.menu
-    LIMIT 5;
+| customer_id | total_spent |
+| ----------- | ----------- |
+| B           | 12          |
+| C           | 9           |
+| A           | 14          |
 
-| product_id | product_name | price |
-| ---------- | ------------ | ----- |
-| 1          | sushi        | 10    |
-| 2          | curry        | 15    |
-| 3          | ramen        | 12    |
-
----
 
 [View on DB Fiddle](https://www.db-fiddle.com/f/2rM8RAnq7h5LLDTzZiRWcd/138)
+
+---
 
 -- 2. How many days has each customer visited the restaurant?
 <br>
