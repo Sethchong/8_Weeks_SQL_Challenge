@@ -13,7 +13,8 @@
     JOIN dannys_diner.menu AS m
     	ON s.product_id = m.product_id 
         
-    GROUP BY customer_id;
+    GROUP BY customer_id
+    ORDER BY customer_id;
 ````
 SUM the ```product_id``` to get the total spent
 <br>
@@ -23,14 +24,17 @@ JOIN both ```menu``` and ```sales``` tables using ```product_id```
 
 | customer_id | total_spent |
 | ----------- | ----------- |
+| A           | 14          |
 | B           | 12          |
 | C           | 9           |
-| A           | 14          |
 
 
 [View on DB Fiddle](https://www.db-fiddle.com/f/2rM8RAnq7h5LLDTzZiRWcd/138)
 
 ---
+
+
+[View on DB Fiddle](https://www.db-fiddle.com/f/2rM8RAnq7h5LLDTzZiRWcd/138)
 
 -- 2. How many days has each customer visited the restaurant?
 <br>
