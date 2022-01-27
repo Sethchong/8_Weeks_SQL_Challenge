@@ -28,8 +28,6 @@ JOIN both ```menu``` and ```sales``` tables using ```product_id```
 | C           | 9           |
 
 
-[View on DB Fiddle](https://www.db-fiddle.com/f/2rM8RAnq7h5LLDTzZiRWcd/138)
-
 ---
 
 
@@ -53,7 +51,6 @@ DISTINCT and COUNT to find out the ```Visit_Count``` for each customer
 | C           | 2           |
 
 
-[View on DB Fiddle](https://www.db-fiddle.com/f/2rM8RAnq7h5LLDTzZiRWcd/138)
 
 ---
 
