@@ -59,6 +59,37 @@ DISTINCT and COUNT to find out the ```Visit_Count``` for each customer
 -- 3. What was the first item from the menu purchased by each customer?
 <br>
 
+
+````sql
+    WITH cte_first_item AS (
+      SELECT s.customer_id, s.order_date, m.product_name,
+      DENSE_RANK() OVER (PARTITION BY s.customer_id ORDER BY s.order_date) AS ranking
+      
+      FROM dannys_diner.sales s
+      JOIN dannys_diner.menu m
+      	ON s.product_id=m.product_id
+      )
+      
+    SELECT customer_id, product_name
+    FROM cte_first_item 
+    WHERE ranking = 1
+    GROUP BY customer_id, product_name;
+````
+
+Create a cte, ```cte_first_item``` then use windows function to partition ```customer_id``` by ```order_date```
+<br> 
+WHERE ```ranking``` = 1 means to show only the first item the customers ordered
+
+| customer_id | product_name |
+| ----------- | ------------ |
+| A           | curry        |
+| A           | sushi        |
+| B           | curry        |
+| C           | ramen        |
+
+---
+
+
 -- 4. What is the most purchased item on the menu and how many times was it purchased by all customers?
 <br>
 
