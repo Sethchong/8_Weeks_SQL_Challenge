@@ -56,7 +56,7 @@ DISTINCT and COUNT to find out the ```Visit_Count``` for each customer
 
 
 
--- 3. What was the first item from the menu purchased by each customer?
+### -- 3. What was the first item from the menu purchased by each customer?
 <br>
 
 
@@ -90,23 +90,79 @@ WHERE ```ranking``` = 1 means to show only the first item the customers ordered
 ---
 
 
--- 4. What is the most purchased item on the menu and how many times was it purchased by all customers?
+### -- 4. What is the most purchased item on the menu and how many times was it purchased by all customers?
 <br>
 
--- 5. Which item was the most popular for each customer?
+Finding out which item is the most purchased on the menu
+````SQL
+    WITH most_purchased_cte AS (
+      SELECT product_name, rank()OVER(ORDER BY COUNT(product_name)DESC) AS row_rank
+      
+      FROM dannys_diner.sales s
+      JOIN dannys_diner.menu m 
+      	ON s.product_id = m.product_id
+      GROUP BY product_name
+      )
+    
+    
+    SELECT * 
+    FROM most_purchased_cte 
+    WHERE row_rank = 1;
+````
+
+Create a cte and COUNT() number of ```product_name``` 
+
+| product_name | row_rank |
+| ------------ | -------- |
+| ramen        | 1        |
+
+---
+
+Finding out how many times was it purchased by all the customers
+
+````SQL
+
+    WITH most_purchased_cte AS (
+      SELECT product_name, COUNT(product_name)AS count_of_item
+      
+      FROM dannys_diner.sales s
+      JOIN dannys_diner.menu m 
+      	ON s.product_id = m.product_id
+      GROUP BY product_name
+      )
+    
+    
+    SELECT * 
+    FROM most_purchased_cte 
+    ORDER BY count_of_item DESC;
+````
+
+COUNT() the number of ```product_name``` and call the cte and ORDER BY in DESC order
+
+| product_name | count_of_item |
+| ------------ | ------------- |
+| ramen        | 8             |
+| curry        | 4             |
+| sushi        | 3             |
+
+---
+
+
+
+### -- 5. Which item was the most popular for each customer?
 <br>
 
--- 6. Which item was purchased first by the customer after they became a member?
+### -- 6. Which item was purchased first by the customer after they became a member?
 <br>
 
--- 7. Which item was purchased just before the customer became a member?
+### -- 7. Which item was purchased just before the customer became a member?
 <br>
 
--- 8. What is the total items and amount spent for each member before they became a member?
+### -- 8. What is the total items and amount spent for each member before they became a member?
 <br>
 
--- 9.  If each $1 spent equates to 10 points and sushi has a 2x points multiplier - how many points would each customer have?
+### -- 9.  If each $1 spent equates to 10 points and sushi has a 2x points multiplier - how many points would each customer have?
 <br>
 
--- 10. In the first week after a customer joins the program (including their join date) they earn 2x points on all items, not just sushi - how many points do customer A and B have at the end of January?
+### -- 10. In the first week after a customer joins the program (including their join date) they earn 2x points on all items, not just sushi - how many points do customer A and B have at the end of January?
 <br>
