@@ -251,6 +251,38 @@ then joining menu and sales table to get ```product_name```
 
 ### -- 8. What is the total items and amount spent for each member before they became a member?
 <br>
+    
+
+````SQL
+    WITH cte AS (
+      SELECT s.customer_id, SUM(m.price) AS total_spent, 
+      COUNT(DISTINCT m.product_name)AS total_items
+    
+      
+      FROM dannys_diner.sales s
+      JOIN dannys_diner.menu m 
+      	ON s.product_id = m.product_id 
+      
+      JOIN dannys_diner.members a 
+      ON a.customer_id = s.customer_id
+      WHERE a.join_date > s.order_date
+      GROUP BY s.customer_id
+      
+      )
+    
+    SELECT * 
+    FROM cte;
+````
+
+| customer_id | total_spent | total_items |
+| ----------- | ----------- | ----------- |
+| A           | 25          | 2           |
+| B           | 40          | 2           |
+
+---
+
+
+
 
 ### -- 9.  If each $1 spent equates to 10 points and sushi has a 2x points multiplier - how many points would each customer have?
 <br>
