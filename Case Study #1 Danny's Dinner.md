@@ -152,6 +152,34 @@ COUNT() the number of ```product_name``` and call the cte and ORDER BY in DESC o
 ### -- 5. Which item was the most popular for each customer?
 <br>
 
+````SQL
+    WITH most_popular AS (
+      SELECT customer_id, product_name, 
+      DENSE_RANK()OVER(PARTITION BY customer_id ORDER BY COUNT(m.product_id)) AS most_popular_item
+      
+      FROM dannys_diner.sales s
+      JOIN dannys_diner.menu m
+      	ON s.product_id=m.product_id
+      GROUP BY customer_id, product_name
+      )
+      
+    SELECT *
+    FROM most_popular
+    WHERE most_popular_item = 1;
+````    
+Arrange and COUNT by ```product_id```, then PARTITION BY ```customer_id``` 
+
+| customer_id | product_name | most_popular_item |
+| ----------- | ------------ | ----------------- |
+| A           | sushi        | 1                 |
+| B           | ramen        | 1                 |
+| B           | curry        | 1                 |
+| B           | sushi        | 1                 |
+| C           | ramen        | 1                 |
+
+---
+
+
 ### -- 6. Which item was purchased first by the customer after they became a member?
 <br>
 
