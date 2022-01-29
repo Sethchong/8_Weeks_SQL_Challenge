@@ -217,6 +217,38 @@ then joining menu and sales table to get ```product_name```
 ### -- 7. Which item was purchased just before the customer became a member?
 <br>
 
+````SQL
+    WITH cte AS (
+      SELECT s.customer_id, m.product_name, 
+      DENSE_RANK() OVER (PARTITION BY s.customer_id ORDER BY s.order_date) AS order_dates
+      
+      
+      FROM dannys_diner.sales s
+      JOIN dannys_diner.menu m 
+      	ON s.product_id = m.product_id 
+      
+      
+      JOIN dannys_diner.members a 
+      ON a.customer_id = s.customer_id
+      WHERE a.join_date > s.order_date
+      
+      )
+    
+    SELECT * 
+    FROM cte
+    WHERE order_dates = 1;
+````
+
+| customer_id | product_name | order_dates |
+| ----------- | ------------ | ----------- |
+| A           | sushi        | 1           |
+| A           | curry        | 1           |
+| B           | curry        | 1           |
+
+---
+
+
+
 ### -- 8. What is the total items and amount spent for each member before they became a member?
 <br>
 
