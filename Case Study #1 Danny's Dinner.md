@@ -314,3 +314,38 @@ JOIN ```product_id``` to get ```product_name```
 
 ### -- 10. In the first week after a customer joins the program (including their join date) they earn 2x points on all items, not just sushi - how many points do customer A and B have at the end of January?
 <br>
+
+    
+````SQL
+    WITH cte AS (
+      SELECT *, 
+      a.join_date + INTERVAL '1 week' AS bonus_week
+      FROM dannys_diner.members a
+      )
+    
+    
+    SELECT s.customer_id, 
+    	   SUM(CASE WHEN s.order_date BETWEEN a.join_date AND a.bonus_week THEN m.price*20
+               		WHEN s.order_date NOT BETWEEN a.join_date AND a.bonus_week AND m.product_name IN ('sushi') THEN m.price*20 
+               		ELSE m.price*10
+               		END
+              ) AS points
+    FROM cte a
+    JOIN dannys_diner.sales s
+    	ON s.customer_id = a.customer_id
+    JOIN dannys_diner.menu m 
+    	ON s.product_id = m.product_id
+    GROUP BY s.customer_id
+    ORDER BY s.customer_id;
+````
+Create a cte to define the bonus week 
+Afterwards, set up the conditions for the bonus points and keep in mind that the sushi 2x points still applies. 
+JOIN all the relevant tables up 
+
+| customer_id | points |
+| ----------- | ------ |
+| A           | 1370   |
+| B           | 1060   |
+
+---
+
