@@ -390,6 +390,44 @@ using CASE WHEN to set up the conditions for members
 
 <br> 
 
+````SQL
+    WITH CTE AS
+    (
+    SELECT s.customer_id, s.order_date, m.product_name, m.price, 
+    CASE WHEN a.join_date > s.order_date THEN 'N' ELSE 'Y' END AS "member"
+    FROM dannys_diner.sales s 
+    JOIN dannys_diner.menu m 
+    ON s.product_id = m.product_id
+    LEFT JOIN dannys_diner.members a 
+    ON s.customer_id = a.customer_id
+    ORDER BY s.customer_id ASC, s.order_date ASC, m.product_name ASC
+    )
+    
+    SELECT *, CASE WHEN member = 'N' THEN NULL ELSE dense_rank() over (partition by customer_id, member ORDER BY order_date) END AS ranking
+    FROM CTE;
+````
+
+| customer_id | order_date               | product_name | price | member | ranking |
+| ----------- | ------------------------ | ------------ | ----- | ------ | ------- |
+| A           | 2021-01-01T00:00:00.000Z | curry        | 15    | N      |         |
+| A           | 2021-01-01T00:00:00.000Z | sushi        | 10    | N      |         |
+| A           | 2021-01-07T00:00:00.000Z | curry        | 15    | Y      | 1       |
+| A           | 2021-01-10T00:00:00.000Z | ramen        | 12    | Y      | 2       |
+| A           | 2021-01-11T00:00:00.000Z | ramen        | 12    | Y      | 3       |
+| A           | 2021-01-11T00:00:00.000Z | ramen        | 12    | Y      | 3       |
+| B           | 2021-01-01T00:00:00.000Z | curry        | 15    | N      |         |
+| B           | 2021-01-02T00:00:00.000Z | curry        | 15    | N      |         |
+| B           | 2021-01-04T00:00:00.000Z | sushi        | 10    | N      |         |
+| B           | 2021-01-11T00:00:00.000Z | sushi        | 10    | Y      | 1       |
+| B           | 2021-01-16T00:00:00.000Z | ramen        | 12    | Y      | 2       |
+| B           | 2021-02-01T00:00:00.000Z | ramen        | 12    | Y      | 3       |
+| C           | 2021-01-01T00:00:00.000Z | ramen        | 12    | Y      | 1       |
+| C           | 2021-01-01T00:00:00.000Z | ramen        | 12    | Y      | 1       |
+| C           | 2021-01-07T00:00:00.000Z | ramen        | 12    | Y      | 2       |
+
+---
+
+
 
 
 
